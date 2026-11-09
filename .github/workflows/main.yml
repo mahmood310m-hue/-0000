@@ -24,6 +24,9 @@ jobs:
           channel: 'stable'
           cache: true
 
+      - name: Check files structure (Debug)
+        run: ls -R
+
       - name: Install dependencies
         run: flutter pub get
 
