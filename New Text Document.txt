@@ -1,0 +1,33 @@
+name: kawtar_school_app
+description: تطبيق مدرسة كوثر الأهلية المختلطة لإدارة الطلاب والواجبات والجداول.
+publish_to: 'none' # منع النشر بالخطأ على pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # مكتبات الواجهات والتصميم
+  cupertino_icons: ^1.0.6
+  
+  # ربط قاعدة البيانات والخدمات الخلفية
+  supabase_flutter: ^2.5.0
+  
+  # التخزين المحلي وإدارة الحالة البسيطة
+  shared_preferences: ^2.2.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+
+  # تخصيص الخطوط أو الأصول (Images / Fonts) إذا لزم الأمر لاحقاً
+  # assets:
+  #   - assets/images/
