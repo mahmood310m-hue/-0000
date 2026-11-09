@@ -1,7 +1,6 @@
-name: kawtar_school_app
-description: تطبيق مدرسة كوثر الأهلية المختلطة لإدارة الطلاب والواجبات والجداول.
-publish_to: 'none' # منع النشر بالخطأ على pub.dev
-
+name: kauthar_school_app
+description: تطبيق مدرسة كوثر الأهلية المختلطة
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
@@ -10,24 +9,55 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  # مكتبات الواجهات والتصميم
-  cupertino_icons: ^1.0.6
   
-  # ربط قاعدة البيانات والخدمات الخلفية
-  supabase_flutter: ^2.5.0
+  # UI
+  google_fonts: ^6.1.0
+  flutter_svg: ^2.0.9
+  cached_network_image: ^3.3.1
+  shimmer: ^3.0.0
   
-  # التخزين المحلي وإدارة الحالة البسيطة
-  shared_preferences: ^2.2.3
+  # State Management
+  provider: ^6.1.1
+  
+  # Supabase
+  supabase_flutter: ^2.3.4
+  
+  # Navigation
+  go_router: ^13.0.1
+  
+  # Utils
+  intl: ^0.18.1
+  shared_preferences: ^2.2.2
+  image_picker: ^1.0.5
+  file_picker: ^6.1.1
+  path_provider: ^2.1.2
+  connectivity_plus: ^5.0.2
+  
+  # Charts
+  fl_chart: ^0.66.0
+  
+  # PDF
+  pdf: ^3.10.7
+  printing: ^5.12.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^3.0.1
+  build_runner: ^2.4.8
 
 flutter:
   uses-material-design: true
-
-  # تخصيص الخطوط أو الأصول (Images / Fonts) إذا لزم الأمر لاحقاً
-  # assets:
-  #   - assets/images/
+  
+  assets:
+    - assets/images/
+    - assets/fonts/
+  
+  fonts:
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo-Regular.ttf
+        - asset: assets/fonts/Cairo-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Cairo-SemiBold.ttf
+          weight: 600
