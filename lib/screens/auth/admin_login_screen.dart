@@ -13,7 +13,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
   bool _hidePassword = true;
 
   @override
@@ -61,17 +60,12 @@ class _LoginScreenState extends State<LoginScreen> {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 420),
             child: Card(
-              elevation: 3,
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
-                      Icons.school,
-                      size: 70,
-                      color: Colors.teal,
-                    ),
+                    const Icon(Icons.school, size: 70),
                     const SizedBox(height: 16),
                     const Text(
                       'مدرسة كوثر الأهلية المختلطة',
@@ -88,7 +82,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: const InputDecoration(
                         labelText: 'البريد الإلكتروني',
                         prefixIcon: Icon(Icons.email),
-                        border: OutlineInputBorder(),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -98,7 +91,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         labelText: 'كلمة المرور',
                         prefixIcon: const Icon(Icons.lock),
-                        border: const OutlineInputBorder(),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _hidePassword
