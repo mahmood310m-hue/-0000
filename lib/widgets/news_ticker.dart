@@ -1,3 +1,4 @@
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,32 +16,29 @@ class _NewsTickerState extends State<NewsTicker> {
   final ScrollController _scrollController = ScrollController();
   bool _isPaused = false;
   Timer? _timer;
-  
+
   @override
   void initState() {
     super.initState();
-    _startScrolling();
-  }
-  
-  void _startScrolling() {
-    _timer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
-      if (!_isPaused && _scrollController.hasClients) {
-        final maxScroll = _scrollController.position.maxScrollExtent;
-        final currentScroll = _scrollController.offset;
-        
-        if (currentScroll >= maxScroll) {
-          _scrollController.jumpTo(0);
-        } else {
-          _scrollController.animateTo(
-            currentScroll + 2,
-            duration: const Duration(milliseconds: 50),
-            curve: Curves.linear,
-          );
-        }
+    _timer = Timer.periodic(const Duration(milliseconds: 50), (_) {
+      if (!mounted || _isPaused || !_scrollController.hasClients) return;
+
+      final position = _scrollController.position;
+      if (position.maxScrollExtent <= 0) return;
+
+      if (_scrollController.offset >= position.maxScrollExtent) {
+        _scrollController.jumpTo(0);
+      } else {
+        _scrollController.jumpTo(
+          (_scrollController.offset + 2).clamp(
+            0.0,
+            position.maxScrollExtent,
+          ),
+        );
       }
     });
   }
-  
+
   @override
   void dispose() {
     _timer?.cancel();
@@ -50,15 +48,22 @@ class _NewsTickerState extends State<NewsTicker> {
 
   @override
   Widget build(BuildContext context) {
-    final announcementProvider = Provider.of<AnnouncementProvider>(context);
-    final news = announcementProvider.news;
-    
+    final provider = context.watch<AnnouncementProvider>();
+    final news = provider.announcements;
+
     if (news.isEmpty) {
       return const SizedBox.shrink();
     }
-    
-    final newsText = news.map((n) => n.title).join('   •   ');
-    
+
+    final newsText = news
+        .map((item) => item['title']?.toString() ?? '')
+        .where((title) => title.isNotEmpty)
+        .join('   •   ');
+
+    if (newsText.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
     return Container(
       height: 40,
       decoration: BoxDecoration(
@@ -67,7 +72,6 @@ class _NewsTickerState extends State<NewsTicker> {
       ),
       child: Row(
         children: [
-          // أيقونة الأخبار
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: const Icon(
@@ -76,14 +80,10 @@ class _NewsTickerState extends State<NewsTicker> {
               size: 20,
             ),
           ),
-          
-          // النص المتحرك
           Expanded(
             child: GestureDetector(
               onTap: () {
-                setState(() {
-                  _isPaused = !_isPaused;
-                });
+                setState(() => _isPaused = !_isPaused);
               },
               child: SingleChildScrollView(
                 controller: _scrollController,
@@ -101,8 +101,6 @@ class _NewsTickerState extends State<NewsTicker> {
               ),
             ),
           ),
-          
-          // زر الإيقاف/التشغيل
           IconButton(
             icon: Icon(
               _isPaused ? Icons.play_arrow : Icons.pause,
@@ -110,9 +108,7 @@ class _NewsTickerState extends State<NewsTicker> {
               size: 20,
             ),
             onPressed: () {
-              setState(() {
-                _isPaused = !_isPaused;
-              });
+              setState(() => _isPaused = !_isPaused);
             },
           ),
         ],
