@@ -71,7 +71,7 @@ class AppTheme {
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: Colors.white,
         indicatorColor: secondaryColor.withOpacity(0.3),
-        selectedIconTheme: const IconThemeData(color: primaryColor),
+        
         selectedLabelTextStyle: const TextStyle(
           color: primaryColor,
           fontWeight: FontWeight.bold,
