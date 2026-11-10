@@ -72,10 +72,7 @@ class AppTheme {
         backgroundColor: Colors.white,
         indicatorColor: secondaryColor.withOpacity(0.3),
         
-        selectedLabelTextStyle: const TextStyle(
-          color: primaryColor,
-          fontWeight: FontWeight.bold,
-        ),
+        
       ),
     );
   }
