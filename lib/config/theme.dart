@@ -30,7 +30,7 @@ class AppTheme {
           fontFamily: 'Cairo',
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: cardColor,
         elevation: 2,
         shape: RoundedRectangleBorder(
