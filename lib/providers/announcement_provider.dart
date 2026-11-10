@@ -1,60 +1,75 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class AuthProvider extends ChangeNotifier {
-  User? get currentUser => Supabase.instance.client.auth.currentUser;
+class AnnouncementProvider extends ChangeNotifier {
+  final SupabaseClient _client = Supabase.instance.client;
 
+  List<Map<String, dynamic>> _announcements = [];
   bool _isLoading = false;
+
+  List<Map<String, dynamic>> get announcements => _announcements;
   bool get isLoading => _isLoading;
 
-  AuthProvider() {
-    Supabase.instance.client.auth.onAuthStateChange.listen((data) {
-      notifyListeners();
-    });
-  }
-
-  Future<String?> signIn(String email, String password) async {
+  Future<void> loadAnnouncements() async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      await Supabase.instance.client.auth.signInWithPassword(
-        email: email,
-        password: password,
-      );
-      return null;
-    } on AuthException catch (e) {
-      return e.message;
+      _announcements = await _client
+          .from('announcements')
+          .select()
+          .order('created_at', ascending: false);
     } catch (e) {
-      return 'حدث خطأ أثناء تسجيل الدخول';
+      debugPrint('خطأ تحميل الإعلانات: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
 
-  Future<String?> signUp(String email, String password) async {
-    _isLoading = true;
-    notifyListeners();
-
+  Future<bool> addAnnouncement(
+    Map<String, dynamic> announcement,
+  ) async {
     try {
-      await Supabase.instance.client.auth.signUp(
-        email: email,
-        password: password,
-      );
-      return null;
-    } on AuthException catch (e) {
-      return e.message;
+      await _client.from('announcements').insert(announcement);
+      await loadAnnouncements();
+      return true;
     } catch (e) {
-      return 'حدث خطأ أثناء إنشاء الحساب';
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      debugPrint('خطأ إضافة الإعلان: $e');
+      return false;
     }
   }
 
-  Future<void> signOut() async {
-    await Supabase.instance.client.auth.signOut();
-    notifyListeners();
+  Future<bool> updateAnnouncement(
+    String id,
+    Map<String, dynamic> announcement,
+  ) async {
+    try {
+      await _client
+          .from('announcements')
+          .update(announcement)
+          .eq('id', id);
+
+      await loadAnnouncements();
+      return true;
+    } catch (e) {
+      debugPrint('خطأ تحديث الإعلان: $e');
+      return false;
+    }
+  }
+
+  Future<bool> deleteAnnouncement(String id) async {
+    try {
+      await _client
+          .from('announcements')
+          .delete()
+          .eq('id', id);
+
+      await loadAnnouncements();
+      return true;
+    } catch (e) {
+      debugPrint('خطأ حذف الإعلان: $e');
+      return false;
+    }
   }
 }
